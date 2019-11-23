@@ -1,6 +1,7 @@
 package com.mygdx.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -10,18 +11,21 @@ public class Bird {
     private static final int MOVEMENT = 100;
     private Vector3 position;
     private Vector3 velocity;
+    private Animation birdAnimation;
 
-    private Texture texture;
     private Rectangle bounds;
+    Texture texture;
 
     public Bird (int x, int y){
         position = new Vector3(x, y, 0);
         velocity = new Vector3(0, 0 ,0);
-        texture = new Texture("bird2.png");
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        texture = new Texture("animation.png");
+        birdAnimation = new Animation(texture, 3, 0.5f);
+        bounds = new Rectangle(x, y, texture.getWidth() /3, texture.getHeight());
     }
 
     public void update(float dt){
+        birdAnimation.update(dt);
         if(position.y > 0)
             velocity.add(0, GRAVITY, 0);
         velocity.scl(dt);
@@ -43,8 +47,8 @@ public class Bird {
         return position;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public TextureRegion getTexture() {
+        return birdAnimation.getFrame();
     }
 
     public Rectangle getBounds(){
